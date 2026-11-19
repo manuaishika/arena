@@ -267,3 +267,17 @@ class LiveImage:
             self.widget = ipywidgets.Image(format="png")
             display(self.widget)
         self.widget.value = samples_to_png(x, nrows=nrows)
+
+
+def load_pretrained_resnet34():
+    """
+    Equivalent to `models.resnet34(weights=models.ResNet34_Weights.IMAGENET1K_V1)`, but fetches the same torchvision
+    checkpoint from the HuggingFace Hub (timm/resnet34.tv_in1k), since download.pytorch.org may be unreachable.
+    """
+    from huggingface_hub import hf_hub_download
+    from safetensors.torch import load_file
+    from torchvision import models
+
+    resnet = models.resnet34()
+    resnet.load_state_dict(load_file(hf_hub_download("timm/resnet34.tv_in1k", "model.safetensors")))
+    return resnet

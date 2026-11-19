@@ -37,7 +37,7 @@ MAIN = __name__ == "__main__"
 
 import part2_cnns.tests as tests
 import part2_cnns.utils as utils
-from fundamentals_utils import CIFAR10
+from fundamentals_utils import CIFAR10, load_pretrained_resnet34
 from plotly_utils import line
 
 # On machines with many cores the default of one
@@ -712,7 +712,7 @@ def copy_weights(my_resnet: ResNet34, pretrained_resnet: models.resnet.ResNet) -
 
 
 if MAIN:
-    pretrained_resnet = models.resnet34(weights=models.ResNet34_Weights.IMAGENET1K_V1).to(device)
+    pretrained_resnet = load_pretrained_resnet34().to(device)
     my_resnet = copy_weights(my_resnet, pretrained_resnet).to(device)
     print("Weights copied successfully!")
 
@@ -861,7 +861,7 @@ def get_resnet_for_feature_extraction(n_classes: int) -> ResNet34:
     my_resnet = ResNet34()
 
     # Load the pretrained weights
-    pretrained_resnet = models.resnet34(weights=models.ResNet34_Weights.IMAGENET1K_V1)
+    pretrained_resnet = load_pretrained_resnet34()
 
     # Copy the weights over
     my_resnet = copy_weights(my_resnet, pretrained_resnet)
